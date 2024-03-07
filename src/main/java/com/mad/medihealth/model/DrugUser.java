@@ -9,7 +9,10 @@ public class DrugUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "user_id")
+    
+    @Column(name = "user_id", nullable = false)
     private String userId;
 }
