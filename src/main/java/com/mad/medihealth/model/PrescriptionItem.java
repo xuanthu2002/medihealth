@@ -1,5 +1,6 @@
 package com.mad.medihealth.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ public class PrescriptionItem {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private String name;
     private String note;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "prescription_id")
     private Prescription prescription;

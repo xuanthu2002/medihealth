@@ -1,5 +1,6 @@
 package com.mad.medihealth.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,8 +16,10 @@ public class Prescription {
     @ManyToOne
     @JoinColumn(name = "drug_user_id")
     private DrugUser drugUser;
-    @OneToMany(mappedBy = "prescription")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
     private List<PrescriptionItem> prescriptionItems;
-    @OneToMany(mappedBy = "prescription")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
     private List<Schedule> schedules;
 }
