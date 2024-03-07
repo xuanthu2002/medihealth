@@ -11,14 +11,20 @@ import java.util.List;
 public class Prescription {
     @Id
     private @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
+
+    @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "is_active", nullable = false)
     private boolean isActive;
     @ManyToOne
-    @JoinColumn(name = "drug_user_id")
+    @JoinColumn(name = "drug_user_id", nullable = false)
     private DrugUser drugUser;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
     private List<PrescriptionItem> prescriptionItems;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
     private List<Schedule> schedules;
