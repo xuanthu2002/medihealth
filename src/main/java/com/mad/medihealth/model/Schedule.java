@@ -6,7 +6,6 @@ import lombok.Data;
 import java.time.LocalTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
 @Entity(name = "schedules")
@@ -16,7 +15,13 @@ public class Schedule {
     @Column(name = "time", nullable = false)
     private LocalTime time;
     
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive;
+    
     @ManyToOne
     @JoinColumn(name = "prescription_id")
     private Prescription prescription;
+    
+    @OneToMany(mappedBy = "schedule")
+    private List<ConfirmNotification> confirmNotifications;
 }
