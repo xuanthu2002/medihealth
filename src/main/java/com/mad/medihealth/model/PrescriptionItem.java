@@ -8,10 +8,10 @@ import lombok.Data;
 @Entity(name = "prescription_items")
 public class PrescriptionItem {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
-
+    
     @Column(name = "name", nullable = false)
     private String name;
-
+    
     @Column(name = "note",nullable = false)
     private String note;
 
