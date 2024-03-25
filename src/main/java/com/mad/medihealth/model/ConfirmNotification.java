@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
 @Entity(name = "confirm_notifications")
@@ -16,7 +19,14 @@ public class ConfirmNotification {
     @Column(name = "date", nullable = false)
     private LocalDate date;
     
+    @Column(name = "time", nullable = false)
+    private LocalTime time;
+    
+    @Column(name = "des", nullable = true)
+    private String des;
+    
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "schedule_id", nullable = false )
-    private Schedule schedule;
+    @JoinColumn(name = "prescription_id", nullable = false )
+    private Prescription prescription;
 }
