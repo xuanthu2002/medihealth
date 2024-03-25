@@ -1,8 +1,13 @@
 package com.mad.medihealth.util;
 
+import lombok.Builder;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@Data
+@Builder
 public class ResponseObject {
     private int code;
     private String message;

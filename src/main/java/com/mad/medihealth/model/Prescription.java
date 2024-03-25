@@ -15,7 +15,7 @@ public class Prescription {
     
     @Column(name = "title", nullable = false)
     private String title;
-    
+
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
     
@@ -29,5 +29,4 @@ public class Prescription {
     @OneToMany(mappedBy = "prescription")
     @JsonIgnoreProperties("prescription")
     private List<Schedule> schedules;
-   
 }

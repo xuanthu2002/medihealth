@@ -1,7 +1,6 @@
 package com.mad.medihealth.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,8 +14,8 @@ public class PrescriptionItem {
     
     @Column(name = "note",nullable = false)
     private String note;
-    
-    @JsonIgnore
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "prescription_id", nullable = false)
     private Prescription prescription;
