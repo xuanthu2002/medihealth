@@ -22,4 +22,7 @@ public class Schedule {
 
     @OneToMany(mappedBy = "schedule")
     private List<ConfirmNotification> listCN;
+
+    @Column(name = "is_active")
+    boolean isActive;
 }
