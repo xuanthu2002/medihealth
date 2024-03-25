@@ -17,11 +17,11 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 			+ "JOIN drug_users ON prescriptions.drug_user_id = drug_users.id\r\n"
 			+ "WHERE drug_users.user_id = :userId\r\n"
 			+ "  AND prescriptions.is_active = 1\r\n"
+			+ "  AND schedules.is_active = 1\r\n"
 			+ "  AND NOT EXISTS (\r\n"
 			+ "    SELECT 1\r\n"
 			+ "    FROM confirm_notifications\r\n"
-			+ "    WHERE confirm_notifications.time = schedules.time\r\n"
-			+ "      AND confirm_notifications.prescription_id = prescriptions.id\r\n"
+			+ "    WHERE confirm_notifications.schedule_id = schedules.id\r\n"
 			+ "      AND confirm_notifications.date = curdate()\r\n"
 			+ ")\r\n"
 			+ "ORDER BY schedules.time;\r\n", nativeQuery = true)

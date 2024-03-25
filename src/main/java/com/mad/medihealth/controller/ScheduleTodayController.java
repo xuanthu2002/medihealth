@@ -3,7 +3,6 @@ package com.mad.medihealth.controller;
 import java.time.LocalTime;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mad.medihealth.service.impl.ConfirmNotificationServiceImpl;
-import com.mad.medihealth.service.impl.ScheduleServiceImpl;
+import com.mad.medihealth.service.ConfirmNotificationService;
+import com.mad.medihealth.service.ScheduleService;
 import com.mad.medihealth.util.ResponseMessage;
 
 import lombok.RequiredArgsConstructor;
@@ -23,19 +22,19 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/schedule-today")
 @RequiredArgsConstructor
 public class ScheduleTodayController {
-	private final ScheduleServiceImpl scheduleServiceImpl;
-	private final ConfirmNotificationServiceImpl confirmNotificationServiceImpl;
+	private final ScheduleService scheduleService;
+	private final ConfirmNotificationService confirmNotificationService;
 	
 	@GetMapping("")
 	public ResponseEntity<?> getAllScheduleofToday(@RequestParam("user_id") String userId){
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(
-						scheduleServiceImpl.getListScheduleofToday(userId)
+						scheduleService.getListScheduleofToday(userId)
 						);
 	}
 	@PostMapping("/confirm")
 	public ResponseEntity<?> saveConfirmNotification_Confirm(@RequestParam("schedule_id") Long schedule_id, @RequestParam("time") LocalTime time){
-		if(confirmNotificationServiceImpl.saveConfirmNotification(schedule_id, true, time, null)) {
+		if(confirmNotificationService.saveConfirmNotification(schedule_id, true, time, null)) {
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(new ResponseMessage("Confirm schedule successfully"));
 		}
@@ -44,7 +43,7 @@ public class ScheduleTodayController {
 	
 	@PostMapping("/skip")
 	public ResponseEntity<?> saveConfirmNotification_Skip(@RequestParam("schedule_id") Long schedule_id, @RequestParam("time") LocalTime time, @RequestParam("des")String des){
-		if(confirmNotificationServiceImpl.saveConfirmNotification(schedule_id, false, time, des)) {
+		if(confirmNotificationService.saveConfirmNotification(schedule_id, false, time, des)) {
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(new ResponseMessage("Skip schedule successfully"));
 		}

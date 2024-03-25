@@ -27,6 +27,6 @@ public class ConfirmNotification {
     
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "prescription_id", nullable = false )
-    private Prescription prescription;
+    @JoinColumn(name = "schedule_id", nullable = false )
+    private Schedule schedule;
 }
