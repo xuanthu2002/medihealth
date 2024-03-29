@@ -1,11 +1,14 @@
 package com.mad.medihealth.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @Entity(name = "prescriptions")
@@ -21,12 +24,13 @@ public class Prescription {
     
     @ManyToOne
     @JoinColumn(name = "drug_user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private DrugUser drugUser;
-    
-    @OneToMany(mappedBy = "prescription")
+
+    @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
     private List<PrescriptionItem> prescriptionItems;
-    
-    @OneToMany(mappedBy = "prescription")
+
     @JsonIgnoreProperties("prescription")
+    @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
     private List<Schedule> schedules;
 }
