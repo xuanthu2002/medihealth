@@ -1,11 +1,11 @@
 package com.mad.medihealth.service;
 
-import java.util.List;
-
-import com.mad.medihealth.exception.DataNotFoundException;
 import com.mad.medihealth.model.Schedule;
 
+import java.util.List;
+
 public interface ScheduleService {
-	List<Schedule> getListScheduleofToday(String user_id);
-	List<Schedule> getAllByUser(String userId);
+    List<Schedule> getListScheduleofToday(String user_id);
+
+    List<Schedule> getAllByUser(String userId);
 }
