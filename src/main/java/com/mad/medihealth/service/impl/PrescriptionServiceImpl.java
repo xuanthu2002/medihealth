@@ -23,6 +23,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     private PrescriptionRepository prescriptionRepository;
     @Autowired
     private DrugUserRepository drugUserRepository;
+    @Autowired
+    private PrescriptionItemRepository prescriptionItemRepository;
 
     @Override
     public Iterable<Prescription> getAllByDrugUser(Long drugUserId) throws DataNotFoundException {
@@ -70,9 +72,13 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         original.setActive(prescription.isActive());
 
         // Xóa items cũ không có trong items mới
-        original.getPrescriptionItems().removeIf(
-                (item) -> prescription.getPrescriptionItems().contains(item)
-        );
+        List<PrescriptionItem> oldPrescriptionItems = new ArrayList<>(original.getPrescriptionItems());
+        oldPrescriptionItems.forEach((oldItem) -> {
+            if (!prescription.getPrescriptionItems().contains(oldItem)) {
+                original.getPrescriptionItems().remove(oldItem);
+                prescriptionItemRepository.deleteById(oldItem.getId());
+            }
+        });
         // Thêm items mới không có trong items cũ
         prescription.getPrescriptionItems().forEach((item) -> {
             if (original.getPrescriptionItems().stream().noneMatch(

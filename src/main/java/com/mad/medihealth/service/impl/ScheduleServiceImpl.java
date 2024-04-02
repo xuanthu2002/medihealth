@@ -24,21 +24,12 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 
 	@Override
-	public void deleteSchedule(Long id) throws DataNotFoundException {
-		Schedule schedule = scheduleRepository.findById(id).orElseThrow(
-				() -> new DataNotFoundException("Không tìm thấy lịch uống thuốc với id: " + id)
-		);
-		schedule.setActive(false);
-		scheduleRepository.save(schedule);
-	}
-
-	@Override
-	public void undoSchedule(Long id) throws DataNotFoundException {
-		Schedule schedule = scheduleRepository.findById(id).orElseThrow(
-				() -> new DataNotFoundException("Không tìm thấy lịch uống thuốc với id: " + id)
-		);
-		schedule.setActive(true);
-		scheduleRepository.save(schedule);
+	public List<Schedule> getAllByUser(String userId) {
+		List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAllByPrescriptionDrugUserUserIdOrderByTimeAsc(userId);
+		schedules.forEach((schedule) -> {
+			schedule.setConfirmNotifications(null);
+		});
+		return schedules;
 	}
 
 }

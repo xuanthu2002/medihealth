@@ -7,6 +7,5 @@ import com.mad.medihealth.model.Schedule;
 
 public interface ScheduleService {
 	List<Schedule> getListScheduleofToday(String user_id);
-	void deleteSchedule(Long id) throws DataNotFoundException;
-	void undoSchedule(Long id) throws DataNotFoundException;
+	List<Schedule> getAllByUser(String userId);
 }
