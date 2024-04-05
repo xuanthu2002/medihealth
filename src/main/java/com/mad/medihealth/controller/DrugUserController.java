@@ -13,8 +13,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("drug-user")
 public class DrugUserController {
 
-    @Autowired
+ 	@Autowired
     private DrugUserService drugUserService;
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllDrugUserByUser(@RequestParam("uid") String uid) {
+        return ResponseEntity.status(HttpStatus.OK).body(drugUserService.getAllByUser(uid));
+    }
 
     @GetMapping
     public ResponseEntity<?> getAllByUser(@RequestParam("uid") String uid) {

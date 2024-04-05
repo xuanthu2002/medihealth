@@ -1,4 +1,4 @@
-package com.mad.medihealth.repository;
+ package com.mad.medihealth.repository;
 
 import com.mad.medihealth.model.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
