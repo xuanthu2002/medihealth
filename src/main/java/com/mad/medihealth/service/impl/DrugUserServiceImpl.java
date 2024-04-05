@@ -15,17 +15,18 @@ public class DrugUserServiceImpl implements DrugUserService {
 
     @Override
     public Iterable<DrugUser> getAllByUser(String uid) {
-        return drugUserRepository.findAllByUserId(uid);
+        return drugUserRepository.findAllByUserIdAndIsActiveIsTrue(uid);
     }
 
     @Override
     public DrugUser addDrugUser(DrugUser drugUser) {
+        drugUser.setActive(true);
         return drugUserRepository.save(drugUser);
     }
 
     @Override
     public void updateDrugUser(DrugUser drugUser) throws DataNotFoundException {
-        if(!drugUserRepository.existsById(drugUser.getId())) {
+        if (!drugUserRepository.existsByIdAndIsActiveIsTrue(drugUser.getId())) {
             throw new DataNotFoundException("Thông tin người dùng thuốc không tồn tại.");
         }
         drugUserRepository.save(drugUser);
@@ -33,7 +34,7 @@ public class DrugUserServiceImpl implements DrugUserService {
 
     @Override
     public void deleteDrugUser(Long id) throws DataNotFoundException {
-        DrugUser drugUser = drugUserRepository.findById(id).orElseThrow(
+        DrugUser drugUser = drugUserRepository.findByIdAndIsActiveIsTrue(id).orElseThrow(
                 () -> new DataNotFoundException("Thông tin người dùng thuốc không tồn tại.")
         );
         drugUser.setActive(false);

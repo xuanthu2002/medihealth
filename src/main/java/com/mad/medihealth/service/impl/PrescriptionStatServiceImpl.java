@@ -23,8 +23,8 @@ public class PrescriptionStatServiceImpl implements PrescriptionStatService {
     private final PrescriptionStatRepository prescriptionStatRepository;
 
     @Override
-    public List<Prescription> getPrescriptionStatDayByDrugUserID(Long duid, LocalDate date) {
-        List<Prescription> list = prescriptionRepository.findAllByDrugUserId(duid);
+    public List<Prescription> getPrescriptionStatDayByDrugUserID(Long id, LocalDate date) {
+        List<Prescription> list = (List<Prescription>) prescriptionRepository.findAllByDrugUserId(id);
         list.forEach(prescription -> prescription
                 .getSchedules().forEach(schedule -> schedule
                         .setConfirmNotifications(confirmNotificationRepository.findConfirmNotificationByScheduleIdAndDate(schedule.getId(), date))));
@@ -34,8 +34,8 @@ public class PrescriptionStatServiceImpl implements PrescriptionStatService {
     }
 
     @Override
-    public List<Prescription> getPrescriptionStatWeekByDrugUserID(Long duid, LocalDate start, LocalDate end) {
-        List<Prescription> list = prescriptionRepository.findAllByDrugUserId(duid);
+    public List<Prescription> getPrescriptionStatWeekByDrugUserID(Long id, LocalDate start, LocalDate end) {
+        List<Prescription> list = (List<Prescription>) prescriptionRepository.findAllByDrugUserId(id);
         list.forEach(prescription -> prescription
                 .getSchedules().forEach(schedule -> schedule
                         .setConfirmNotifications(confirmNotificationRepository.getConfirmNotificationByScheduldeIdAndWeek(schedule.getId(), start, end))));

@@ -26,10 +26,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public Iterable<Prescription> getAllByDrugUser(Long drugUserId) throws DataNotFoundException {
-        if (!drugUserRepository.existsById(drugUserId)) {
+        if (!drugUserRepository.existsByIdAndIsActiveIsTrue(drugUserId)) {
             throw new DataNotFoundException("Thông tin người dùng thuốc không tồn tại.");
         }
-        List<Prescription> prescriptions = (List<Prescription>) prescriptionRepository.findAllByDrugUserId(drugUserId);
+        List<Prescription> prescriptions = (List<Prescription>) prescriptionRepository.findAllByDrugUserIdAndIsActiveIsTrue(drugUserId);
         prescriptions.forEach(prescription ->
                 prescription.getSchedules().forEach(
                         schedule -> schedule.setConfirmNotifications(null)
@@ -40,7 +40,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public Prescription getById(Long id) throws DataNotFoundException {
-        Prescription prescription = prescriptionRepository.findById(id).orElseThrow(
+        Prescription prescription = prescriptionRepository.findByIdAndIsActiveIsTrue(id).orElseThrow(
                 () -> new DataNotFoundException("Thông tin đơn thuốc không tồn tại")
         );
         prescription.getSchedules().forEach(
@@ -51,19 +51,22 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public Prescription addPrescription(Prescription prescription) throws DataNotFoundException {
-        if (!drugUserRepository.existsById(prescription.getDrugUser().getId())) {
+        if (!drugUserRepository.existsByIdAndIsActiveIsTrue(prescription.getDrugUser().getId())) {
             throw new DataNotFoundException("Thông tin người dùng thuốc không tồn tại.");
         }
 
         prescription.getPrescriptionItems().forEach((item) -> item.setPrescription(prescription));
-        prescription.getSchedules().forEach((schedule) -> schedule.setPrescription(prescription));
+        prescription.getSchedules().forEach((schedule) -> {
+            schedule.setPrescription(prescription);
+            schedule.setActive(true);
+        });
 
         return prescriptionRepository.save(prescription);
     }
 
     @Override
     public void updatePrescription(Prescription prescription) throws DataNotFoundException {
-        Prescription original = prescriptionRepository.findById(prescription.getId())
+        Prescription original = prescriptionRepository.findByIdAndIsActiveIsTrue(prescription.getId())
                 .orElseThrow(() -> new DataNotFoundException("Thông tin đơn thuốc không tồn tại"));
 
         original.setTitle(prescription.getTitle());
@@ -120,9 +123,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public void deletePrescription(Long id) throws DataNotFoundException {
-        if (!prescriptionRepository.existsById(id)) {
-            throw new DataNotFoundException("Thông tin đơn thuốc không tồn tại.");
-        }
-        prescriptionRepository.deleteById(id);
+        Prescription prescription = prescriptionRepository.findByIdAndIsActiveIsTrue(id).orElseThrow(
+                () -> new DataNotFoundException("Thông tin đơn thuốc không tồn tại.")
+        );
+        prescription.setActive(false);
+        prescriptionRepository.save(prescription);
     }
 }
