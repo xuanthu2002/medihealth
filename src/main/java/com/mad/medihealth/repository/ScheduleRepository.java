@@ -17,6 +17,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             + "WHERE drug_users.user_id = :userId\r\n"
             + "  AND prescriptions.is_active = 1\r\n"
             + "  AND schedules.is_active = 1\r\n"
+            + "  AND drug_users.is_active = 1\r\n"
             + "  AND NOT EXISTS (\r\n"
             + "    SELECT 1\r\n"
             + "    FROM confirm_notifications\r\n"
