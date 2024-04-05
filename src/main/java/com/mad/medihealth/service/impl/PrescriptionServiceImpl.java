@@ -7,9 +7,7 @@ import com.mad.medihealth.model.Schedule;
 import com.mad.medihealth.repository.DrugUserRepository;
 import com.mad.medihealth.repository.PrescriptionItemRepository;
 import com.mad.medihealth.repository.PrescriptionRepository;
-import com.mad.medihealth.repository.ScheduleRepository;
 import com.mad.medihealth.service.PrescriptionService;
-import com.mad.medihealth.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

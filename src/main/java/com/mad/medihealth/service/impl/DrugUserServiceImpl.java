@@ -33,9 +33,10 @@ public class DrugUserServiceImpl implements DrugUserService {
 
     @Override
     public void deleteDrugUser(Long id) throws DataNotFoundException {
-        if(!drugUserRepository.existsById(id)) {
-            throw new DataNotFoundException("Thông tin người dùng thuốc không tồn tại.");
-        }
-        drugUserRepository.deleteById(id);
+        DrugUser drugUser = drugUserRepository.findById(id).orElseThrow(
+                () -> new DataNotFoundException("Thông tin người dùng thuốc không tồn tại.")
+        );
+        drugUser.setActive(false);
+        drugUserRepository.save(drugUser);
     }
 }
