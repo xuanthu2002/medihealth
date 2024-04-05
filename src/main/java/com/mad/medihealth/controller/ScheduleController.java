@@ -3,14 +3,12 @@ package com.mad.medihealth.controller;
 import com.mad.medihealth.model.Schedule;
 import com.mad.medihealth.service.ConfirmNotificationService;
 import com.mad.medihealth.service.ScheduleService;
-import com.mad.medihealth.util.ResponseMessage;
 import com.mad.medihealth.util.ResponseObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @RestController

@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PrescriptionStat{
+public class PrescriptionStat {
     private Long id;
     private String title;
-	private float process;
+    private float process;
 }

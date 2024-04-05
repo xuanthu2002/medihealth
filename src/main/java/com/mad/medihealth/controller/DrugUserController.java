@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("drug-user")
 public class DrugUserController {
 
- 	@Autowired
+    @Autowired
     private DrugUserService drugUserService;
 
     @GetMapping("/all")

@@ -1,4 +1,4 @@
- package com.mad.medihealth.repository;
+package com.mad.medihealth.repository;
 
 import com.mad.medihealth.model.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,7 +24,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             + "      AND confirm_notifications.date = curdate()\r\n"
             + ")\r\n"
             + "ORDER BY schedules.time;\r\n", nativeQuery = true)
-    List<Schedule> getList(@Param("userId") String userId);
+    List<Schedule> getListScheduleofToday(@Param("userId") String userId);
 
     Iterable<Schedule> findAllByPrescriptionDrugUserUserIdAndIsActiveIsTrueOrderByTimeAsc(String userId);
 

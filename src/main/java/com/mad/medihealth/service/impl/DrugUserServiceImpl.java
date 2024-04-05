@@ -13,7 +13,7 @@ public class DrugUserServiceImpl implements DrugUserService {
     @Autowired
     private DrugUserRepository drugUserRepository;
 
-	@Override
+    @Override
     public Iterable<DrugUser> getAllByUser(String uid) {
         return drugUserRepository.findAllByUserId(uid);
     }
