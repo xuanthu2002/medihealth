@@ -19,7 +19,10 @@ public class ScheduleServiceImpl implements ScheduleService{
 	private final ScheduleRepository scheduleRepository;
 	@Override
 	public List<Schedule> getListScheduleofToday(String user_id) {
-		return scheduleRepository.getList(user_id);
+		List<Schedule> schedules = scheduleRepository.getListScheduleofToday(user_id);
+		schedules.forEach(schedule -> schedule.setConfirmNotifications(null));
+		schedules.forEach(schedule -> schedule.getPrescription().setSchedules(null));
+		return schedules;
 	}
 
 }
