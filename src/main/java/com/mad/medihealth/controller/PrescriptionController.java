@@ -19,49 +19,30 @@ public class PrescriptionController {
     private PrescriptionService prescriptionService;
 
     @GetMapping
-    public ResponseEntity<?> getAllByDrugUser(@RequestParam("d_uid") Long drugUserId) {
-        try {
-            List<Prescription> results = (List<Prescription>) prescriptionService.getAllByDrugUser(drugUserId);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(
-                            ResponseObject.builder()
-                                    .code(200)
-                                    .message("Ok")
-                                    .data(results)
-                                    .build()
-                    );
-        } catch (DataNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(
-                            ResponseObject.builder()
-                                    .code(404)
-                                    .message(e.getMessage())
-                                    .build()
-                    );
-        }
+    public ResponseEntity<?> getAllByDrugUser(@RequestParam("d_uid") Long drugUserId) throws DataNotFoundException {
+        List<Prescription> results = (List<Prescription>) prescriptionService.getAllByDrugUser(drugUserId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(
+                        ResponseObject.builder()
+                                .code(200)
+                                .message("Ok")
+                                .data(results)
+                                .build()
+                );
+
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable("id") Long id) {
-        try {
-            Prescription result = prescriptionService.getById(id);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(
-                            ResponseObject.builder()
-                                    .code(200)
-                                    .message("Ok")
-                                    .data(result)
-                                    .build()
-                    );
-        } catch (DataNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(
-                            ResponseObject.builder()
-                                    .code(404)
-                                    .message(e.getMessage())
-                                    .build()
-                    );
-        }
+    public ResponseEntity<?> getById(@PathVariable("id") Long id) throws DataNotFoundException {
+        Prescription result = prescriptionService.getById(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(
+                        ResponseObject.builder()
+                                .code(200)
+                                .message("Ok")
+                                .data(result)
+                                .build()
+                );
     }
 
     @PostMapping
@@ -95,7 +76,7 @@ public class PrescriptionController {
                     .body(
                             ResponseObject.builder()
                                     .code(200)
-                                    .message("Update prescription information successfully.")
+                                    .message("Cập nhật thông tin đơn thuốc thành công.")
                                     .build()
                     );
         } catch (DataNotFoundException e) {
@@ -110,25 +91,15 @@ public class PrescriptionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePrescription(@PathVariable("id") Long id) {
-        try {
-            prescriptionService.deletePrescription(id);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(
-                            ResponseObject.builder()
-                                    .code(200)
-                                    .message("Delete prescription information successfully.")
-                                    .build()
-                    );
-        } catch (DataNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(
-                            ResponseObject.builder()
-                                    .code(404)
-                                    .message(e.getMessage())
-                                    .build()
-                    );
-        }
+    public ResponseEntity<?> deletePrescription(@PathVariable("id") Long id) throws DataNotFoundException {
+        prescriptionService.deletePrescription(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(
+                        ResponseObject.builder()
+                                .code(200)
+                                .message("Xóa thông tin đơn thuốc thành công.")
+                                .build()
+                );
     }
 
 }

@@ -27,7 +27,7 @@ public class DrugUserController {
                 .body(
                         ResponseObject.builder()
                                 .code(200)
-                                .message("Ok")
+                                .message("OK")
                                 .data(drugUserService.getAllByUser(uid))
                                 .build()
                 );
@@ -39,54 +39,34 @@ public class DrugUserController {
                 .body(
                         ResponseObject.builder()
                                 .code(201)
-                                .message("Created")
+                                .message("Thêm người dùng thuốc thành công.")
                                 .data(drugUserService.addDrugUser(drugUser))
                                 .build()
                 );
     }
 
     @PutMapping
-    public ResponseEntity<?> editDrugUser(@RequestBody DrugUser drugUser) {
-        try {
-            drugUserService.updateDrugUser(drugUser);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(
-                            ResponseObject.builder()
-                                    .code(200)
-                                    .message("Update drug user information successfully.")
-                                    .build()
-                    );
-        } catch (DataNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(
-                            ResponseObject.builder()
-                                    .code(404)
-                                    .message(e.getMessage())
-                                    .build()
-                    );
-        }
+    public ResponseEntity<?> editDrugUser(@RequestBody DrugUser drugUser) throws DataNotFoundException {
+        drugUserService.updateDrugUser(drugUser);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(
+                        ResponseObject.builder()
+                                .code(200)
+                                .message("Cập nhật thông tin người dùng thuốc thành công.")
+                                .build()
+                );
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDrugUser(@PathVariable("id") Long id) {
-        try {
-            drugUserService.deleteDrugUser(id);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(
-                            ResponseObject.builder()
-                                    .code(200)
-                                    .message("Delete drug user information successfully.")
-                                    .build()
-                    );
-        } catch (DataNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(
-                            ResponseObject.builder()
-                                    .code(404)
-                                    .message(e.getMessage())
-                                    .build()
-                    );
-        }
+    public ResponseEntity<?> deleteDrugUser(@PathVariable("id") Long id) throws DataNotFoundException {
+        drugUserService.deleteDrugUser(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(
+                        ResponseObject.builder()
+                                .code(200)
+                                .message("Xóa thông tin người dùng thuốc thành công.")
+                                .build()
+                );
     }
 
 }
