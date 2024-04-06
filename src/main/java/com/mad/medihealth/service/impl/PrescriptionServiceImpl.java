@@ -7,6 +7,7 @@ import com.mad.medihealth.model.Schedule;
 import com.mad.medihealth.repository.DrugUserRepository;
 import com.mad.medihealth.repository.PrescriptionItemRepository;
 import com.mad.medihealth.repository.PrescriptionRepository;
+import com.mad.medihealth.repository.ScheduleRepository;
 import com.mad.medihealth.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     private DrugUserRepository drugUserRepository;
     @Autowired
     private PrescriptionItemRepository prescriptionItemRepository;
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     @Override
     public Iterable<Prescription> getAllByDrugUser(Long drugUserId) throws DataNotFoundException {
@@ -30,11 +33,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             throw new DataNotFoundException("Thông tin người dùng thuốc không tồn tại.");
         }
         List<Prescription> prescriptions = (List<Prescription>) prescriptionRepository.findAllByDrugUserIdAndIsActiveIsTrue(drugUserId);
-        prescriptions.forEach(prescription ->
-                prescription.getSchedules().forEach(
-                        schedule -> schedule.setConfirmNotifications(null)
-                )
-        );
+        prescriptions.forEach(prescription -> {
+            List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAllByPrescriptionIdAndIsActiveIsTrue(prescription.getId());
+            schedules.forEach(schedule -> schedule.setConfirmNotifications(null));
+            prescription.setSchedules(schedules);
+        });
         return prescriptions;
     }
 
@@ -43,9 +46,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         Prescription prescription = prescriptionRepository.findByIdAndIsActiveIsTrue(id).orElseThrow(
                 () -> new DataNotFoundException("Thông tin đơn thuốc không tồn tại")
         );
-        prescription.getSchedules().forEach(
-                schedule -> schedule.setConfirmNotifications(null)
-        );
+        List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAllByPrescriptionIdAndIsActiveIsTrue(prescription.getId());
+        schedules.forEach(schedule -> schedule.setConfirmNotifications(null));
+        prescription.setSchedules(schedules);
         return prescription;
     }
 

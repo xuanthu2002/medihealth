@@ -31,4 +31,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     Iterable<Schedule> findAllByPrescriptionDrugUserUserIdOrderByTimeAsc(String userId);
 
+    Iterable<Schedule> findAllByPrescriptionIdAndIsActiveIsTrue(Long pid);
+
 }
