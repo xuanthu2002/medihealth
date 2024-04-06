@@ -32,7 +32,6 @@ public class ConfirmNotificationServiceImpl implements ConfirmNotificationServic
             confirmNotification.setDes(des);
             confirmNotification.setDate(LocalDate.now());
             confirmNotification.setSchedule(schedule);
-            ;
             confirmNotificationRepository.save(confirmNotification);
             return true;
         } catch (Exception e) {

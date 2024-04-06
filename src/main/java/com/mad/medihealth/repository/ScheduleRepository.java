@@ -26,6 +26,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             + ")\r\n"
             + "ORDER BY schedules.time;\r\n", nativeQuery = true)
     List<Schedule> getListScheduleofToday(@Param("userId") String userId);
+    
+    Iterable<Schedule> findAllByIsActiveIsTrueAndPrescriptionDrugUserIsActiveIsTrue();
 
     Iterable<Schedule> findAllByPrescriptionDrugUserUserIdAndIsActiveIsTrueOrderByTimeAsc(String userId);
 
