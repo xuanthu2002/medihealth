@@ -20,15 +20,15 @@ public class ScheduledTasks {
 	private final ScheduleRepository scheduleRepository;
 	private final ConfirmNotificationRepository confirmNotificationRepository;
 
-    @Scheduled(cron = "59 59 23 * * *")
+    @Scheduled(cron = "00 05 00 * * *")
     public void doSomething() {
-    	List<Schedule> scheduleList = (List<Schedule>) scheduleRepository.findAllByIsActiveIsTrueAndPrescriptionDrugUserIsActiveIsTrue();
+    	List<Schedule> scheduleList = scheduleRepository.getListScheduletoDefaultConfirm();
     	scheduleList.forEach(schedule -> {
     		ConfirmNotification confirmNotification = new ConfirmNotification();
     		confirmNotification.setCheck(false);
             confirmNotification.setTime(schedule.getTime());
             confirmNotification.setDes("Quên uống");
-            confirmNotification.setDate(LocalDate.now());
+            confirmNotification.setDate(LocalDate.now().minusDays(1));
             confirmNotification.setSchedule(schedule);
             confirmNotificationRepository.save(confirmNotification);
     	});
