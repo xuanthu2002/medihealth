@@ -1,5 +1,6 @@
 package com.mad.medihealth.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -27,7 +29,7 @@ public class Prescription {
     private DrugUser drugUser;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
     private List<PrescriptionItem> prescriptionItems;

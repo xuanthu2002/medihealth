@@ -1,5 +1,6 @@
 package com.mad.medihealth.service.impl;
 
+import com.mad.medihealth.exception.DataNotFoundException;
 import com.mad.medihealth.model.Schedule;
 import com.mad.medihealth.repository.ScheduleRepository;
 import com.mad.medihealth.service.ScheduleService;
@@ -25,12 +26,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<Schedule> getAllByUser(String userId) {
-        List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAllByPrescriptionDrugUserUserIdOrderByTimeAsc(userId);
-        schedules.forEach((schedule) -> {
-            schedule.setConfirmNotifications(null);
-        });
-        return schedules;
+    public boolean checkStatus(Long id) throws DataNotFoundException {
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () ->  new DataNotFoundException("Thông tin lịch uống thuốc không tồn tại.")
+        );
+
+        return schedule.isActive()
+                && schedule.getPrescription().isActive()
+                && schedule.getPrescription().getDrugUser().isActive();
     }
 
 }

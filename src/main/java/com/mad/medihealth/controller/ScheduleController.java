@@ -1,5 +1,6 @@
 package com.mad.medihealth.controller;
 
+import com.mad.medihealth.exception.DataNotFoundException;
 import com.mad.medihealth.model.Schedule;
 import com.mad.medihealth.service.ConfirmNotificationService;
 import com.mad.medihealth.service.ScheduleService;
@@ -21,7 +22,7 @@ public class ScheduleController {
 
     @GetMapping
     public ResponseEntity<?> getAllByUser(@RequestParam("uid") String userId) {
-        List<Schedule> schedules = scheduleService.getAllByUser(userId);
+        List<Schedule> schedules = scheduleService.getListScheduleofToday(userId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
                         ResponseObject.builder()
@@ -37,6 +38,19 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
                         scheduleService.getListScheduleofToday(userId)
+                );
+    }
+
+    @GetMapping("{id}/status")
+    public ResponseEntity<?> checkStatus(@PathVariable("id") Long id) throws DataNotFoundException {
+        boolean isActive = scheduleService.checkStatus(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(
+                        ResponseObject.builder()
+                                .code(200)
+                                .message("OK")
+                                .data(isActive)
+                                .build()
                 );
     }
 
