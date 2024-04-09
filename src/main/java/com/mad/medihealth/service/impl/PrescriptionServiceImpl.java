@@ -12,6 +12,7 @@ import com.mad.medihealth.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +64,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             schedule.setPrescription(prescription);
             schedule.setActive(true);
         });
+        prescription.setCreatedAt(LocalDate.now());
 
         return prescriptionRepository.save(prescription);
     }

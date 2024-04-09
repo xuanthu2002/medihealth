@@ -6,6 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -24,6 +25,9 @@ public class Prescription {
     @JoinColumn(name = "drug_user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private DrugUser drugUser;
+
+    @Column(name = "created_at")
+    private LocalDate createdAt;
 
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
     private List<PrescriptionItem> prescriptionItems;
