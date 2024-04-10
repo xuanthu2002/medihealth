@@ -28,7 +28,11 @@ public class PrescriptionStatServiceImpl implements PrescriptionStatService {
         list.forEach(prescription -> prescription
                 .getSchedules().forEach(schedule -> schedule
                         .setConfirmNotifications(confirmNotificationRepository.findConfirmNotificationByScheduleIdAndDate(schedule.getId(), date))));
-        list.removeIf(prescription -> prescription.getSchedules().stream().allMatch(schedule -> schedule.getConfirmNotifications().isEmpty()));
+        if(date.isBefore(LocalDate.now())) {
+        	list.removeIf(prescription -> prescription.getSchedules().stream().allMatch(schedule -> schedule.getConfirmNotifications().isEmpty()));
+        }else {
+        	list.removeIf(prescription -> !prescription.isActive());
+        }
         list.forEach(prescription -> prescription.getSchedules().removeIf(schedule -> (schedule.getConfirmNotifications().isEmpty() && !schedule.isActive())));
         return list;
     }
@@ -39,8 +43,11 @@ public class PrescriptionStatServiceImpl implements PrescriptionStatService {
         list.forEach(prescription -> prescription
                 .getSchedules().forEach(schedule -> schedule
                         .setConfirmNotifications(confirmNotificationRepository.getConfirmNotificationByScheduldeIdAndWeek(schedule.getId(), start, end))));
-        if (start.isBefore(LocalDate.now())) {
+        if (end.isBefore(LocalDate.now())) {
             list.removeIf(prescription -> prescription.getSchedules().stream().allMatch(schedule -> schedule.getConfirmNotifications().isEmpty()));
+        }
+        if (start.isBefore(LocalDate.now())) {
+        	list.removeIf(prescription -> !prescription.isActive());
         }
         list.forEach(prescription -> prescription.getSchedules().removeIf(schedule -> (schedule.getConfirmNotifications().isEmpty() && !schedule.isActive())));
         return list;
