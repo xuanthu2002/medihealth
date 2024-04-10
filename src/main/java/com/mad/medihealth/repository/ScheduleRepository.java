@@ -43,6 +43,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             + "ORDER BY schedules.time;\r\n", nativeQuery = true)
     List<Schedule> getListScheduletoDefaultConfirm();
 
-    Iterable<Schedule> findAllByPrescriptionIdAndIsActiveIsTrue(Long pid);
+    Iterable<Schedule> findAllByPrescriptionIdAndIsActiveIsTrueOrderByTimeAsc(Long pid);
 
 }

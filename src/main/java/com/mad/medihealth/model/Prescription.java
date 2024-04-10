@@ -26,9 +26,6 @@ public class Prescription {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private DrugUser drugUser;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
     private List<PrescriptionItem> prescriptionItems;
 
