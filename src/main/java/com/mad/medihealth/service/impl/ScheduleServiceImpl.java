@@ -26,9 +26,20 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public Iterable<Schedule> getAllByUserId(String uid) {
+        List<Schedule> schedules = (List<Schedule>) scheduleRepository
+                .findAllByPrescriptionDrugUserUserIdOrderByTimeAsc(uid);
+        schedules.forEach(schedule -> {
+            schedule.setConfirmNotifications(null);
+            schedule.getPrescription().setSchedules(null);
+        });
+        return schedules;
+    }
+
+    @Override
     public boolean checkStatus(Long id) throws DataNotFoundException {
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(
-                () ->  new DataNotFoundException("Thông tin lịch uống thuốc không tồn tại.")
+                () -> new DataNotFoundException("Thông tin lịch uống thuốc không tồn tại.")
         );
 
         return schedule.isActive()

@@ -22,7 +22,7 @@ public class ScheduleController {
 
     @GetMapping
     public ResponseEntity<?> getAllByUser(@RequestParam("uid") String userId) {
-        List<Schedule> schedules = scheduleService.getListScheduleofToday(userId);
+        List<Schedule> schedules = (List<Schedule>) scheduleService.getAllByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
                         ResponseObject.builder()

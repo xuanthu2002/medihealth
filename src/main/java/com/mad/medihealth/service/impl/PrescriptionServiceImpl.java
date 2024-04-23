@@ -12,7 +12,6 @@ import com.mad.medihealth.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         if (!drugUserRepository.existsByIdAndIsActiveIsTrue(drugUserId)) {
             throw new DataNotFoundException("Thông tin người dùng thuốc không tồn tại.");
         }
-        List<Prescription> prescriptions = (List<Prescription>) prescriptionRepository.findAllByDrugUserIdAndIsActiveIsTrue(drugUserId);
+        List<Prescription> prescriptions = (List<Prescription>) prescriptionRepository.findAllByDrugUserId(drugUserId);
         prescriptions.forEach(prescription -> {
             List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAllByPrescriptionIdAndIsActiveIsTrueOrderByTimeAsc(prescription.getId());
             schedules.forEach(schedule -> schedule.setConfirmNotifications(null));
@@ -44,7 +43,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public Prescription getById(Long id) throws DataNotFoundException {
-        Prescription prescription = prescriptionRepository.findByIdAndIsActiveIsTrue(id).orElseThrow(
+        Prescription prescription = prescriptionRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException("Thông tin đơn thuốc không tồn tại")
         );
         List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAllByPrescriptionIdAndIsActiveIsTrueOrderByTimeAsc(prescription.getId());
@@ -70,7 +69,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public void updatePrescription(Prescription prescription) throws DataNotFoundException {
-        Prescription original = prescriptionRepository.findByIdAndIsActiveIsTrue(prescription.getId())
+        Prescription original = prescriptionRepository.findById(prescription.getId())
                 .orElseThrow(() -> new DataNotFoundException("Thông tin đơn thuốc không tồn tại"));
 
         original.setTitle(prescription.getTitle());
@@ -127,7 +126,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public void deletePrescription(Long id) throws DataNotFoundException {
-        Prescription prescription = prescriptionRepository.findByIdAndIsActiveIsTrue(id).orElseThrow(
+        Prescription prescription = prescriptionRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException("Thông tin đơn thuốc không tồn tại.")
         );
         prescription.setActive(false);
