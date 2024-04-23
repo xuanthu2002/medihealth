@@ -35,7 +35,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         }
         List<Prescription> prescriptions = (List<Prescription>) prescriptionRepository.findAllByDrugUserIdAndIsActiveIsTrue(drugUserId);
         prescriptions.forEach(prescription -> {
-            List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAllByPrescriptionIdAndIsActiveIsTrue(prescription.getId());
+            List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAllByPrescriptionIdAndIsActiveIsTrueOrderByTimeAsc(prescription.getId());
             schedules.forEach(schedule -> schedule.setConfirmNotifications(null));
             prescription.setSchedules(schedules);
         });
@@ -47,7 +47,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         Prescription prescription = prescriptionRepository.findByIdAndIsActiveIsTrue(id).orElseThrow(
                 () -> new DataNotFoundException("Thông tin đơn thuốc không tồn tại")
         );
-        List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAllByPrescriptionIdAndIsActiveIsTrue(prescription.getId());
+        List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAllByPrescriptionIdAndIsActiveIsTrueOrderByTimeAsc(prescription.getId());
         schedules.forEach(schedule -> schedule.setConfirmNotifications(null));
         prescription.setSchedules(schedules);
         return prescription;
@@ -64,7 +64,6 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             schedule.setPrescription(prescription);
             schedule.setActive(true);
         });
-        prescription.setCreatedAt(LocalDateTime.now());
 
         return prescriptionRepository.save(prescription);
     }
