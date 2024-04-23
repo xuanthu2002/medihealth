@@ -36,7 +36,6 @@ public class PrescriptionStatServiceImpl implements PrescriptionStatService {
         list.forEach(prescription -> prescription.getSchedules().removeIf(schedule -> (schedule.getConfirmNotifications().isEmpty() && !schedule.isActive())));
         return list;
     }
-
     @Override
     public List<Prescription> getPrescriptionStatWeekByDrugUserID(Long id, LocalDate start, LocalDate end) {
         List<Prescription> list = (List<Prescription>) prescriptionRepository.findAllByDrugUserId(id);
