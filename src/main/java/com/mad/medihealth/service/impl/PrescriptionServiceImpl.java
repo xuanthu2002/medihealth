@@ -126,10 +126,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public void deletePrescription(Long id) throws DataNotFoundException {
-        Prescription prescription = prescriptionRepository.findById(id).orElseThrow(
-                () -> new DataNotFoundException("Thông tin đơn thuốc không tồn tại.")
-        );
-        prescription.setActive(false);
-        prescriptionRepository.save(prescription);
+        if (!prescriptionRepository.existsById(id)) {
+            throw new DataNotFoundException("Thông tin đơn thuốc không tồn tại.");
+        }
+        prescriptionRepository.deleteById(id);
     }
 }
