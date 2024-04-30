@@ -4,11 +4,12 @@ import com.mad.medihealth.exception.DataNotFoundException;
 import com.mad.medihealth.model.Schedule;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ScheduleService {
     List<Schedule> getListScheduleofToday(String user_id);
 
     Iterable<Schedule> getAllByUserId(String uid);
 
-    boolean checkStatus(Long id) throws DataNotFoundException;
+    Schedule getById(Long id) throws DataNotFoundException;
 }

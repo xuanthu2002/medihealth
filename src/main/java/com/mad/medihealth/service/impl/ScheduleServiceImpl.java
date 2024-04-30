@@ -37,14 +37,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public boolean checkStatus(Long id) throws DataNotFoundException {
+    public Schedule getById(Long id) throws DataNotFoundException {
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException("Thông tin lịch uống thuốc không tồn tại.")
         );
-
-        return schedule.isActive()
-                && schedule.getPrescription().isActive()
-                && schedule.getPrescription().getDrugUser().isActive();
+        schedule.setConfirmNotifications(null);
+        schedule.getPrescription().getSchedules().forEach(
+                s -> s.setConfirmNotifications(null)
+        );
+        return schedule;
     }
-
 }

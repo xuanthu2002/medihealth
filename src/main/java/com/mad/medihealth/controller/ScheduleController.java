@@ -41,17 +41,16 @@ public class ScheduleController {
                 );
     }
 
-    @GetMapping("{id}/status")
-    public ResponseEntity<?> checkStatus(@PathVariable("id") Long id) throws DataNotFoundException {
-        boolean isActive = scheduleService.checkStatus(id);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(
-                        ResponseObject.builder()
-                                .code(200)
-                                .message("OK")
-                                .data(isActive)
-                                .build()
-                );
+    @GetMapping("{id}")
+    public ResponseEntity<?> getById(@PathVariable("id") Long id) throws DataNotFoundException {
+        Schedule schedule = scheduleService.getById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                ResponseObject.builder()
+                        .code(200)
+                        .message("OK")
+                        .data(schedule)
+                        .build()
+        );
     }
 
 }
