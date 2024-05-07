@@ -3,6 +3,7 @@ package com.mad.medihealth.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
 
 @Data
 @Entity(name = "prescription_items")

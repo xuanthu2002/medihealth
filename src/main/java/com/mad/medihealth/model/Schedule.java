@@ -23,6 +23,6 @@ public class Schedule {
     @JoinColumn(name = "prescription_id")
     private Prescription prescription;
 
-    @OneToMany(mappedBy = "schedule")
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.REMOVE)
     private List<ConfirmNotification> confirmNotifications;
 }
